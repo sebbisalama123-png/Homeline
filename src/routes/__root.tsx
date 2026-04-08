@@ -33,7 +33,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Hearth & Timber Uganda | Furniture Storefront',
+        title: 'Homeline Uganda | Furniture Storefront',
       },
       {
         name: 'description',
