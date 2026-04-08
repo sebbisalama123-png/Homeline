@@ -68,7 +68,7 @@ function About() {
             See it in person before you buy
           </h2>
           <p className="mt-3 text-sm leading-7 text-(--ink-soft)">
-            Our Kampala showroom is open Monday to Saturday, 9am – 6pm. Walk in
+            Our Kampala showroom is open Monday to Saturday, 8am – 6pm. Walk in
             or book a private appointment for a guided tour of our current
             collection.
           </p>
