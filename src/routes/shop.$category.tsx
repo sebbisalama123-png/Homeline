@@ -15,7 +15,7 @@ export const Route = createFileRoute('/shop/$category')({
     meta: [
       {
         title: loaderData
-          ? `${loaderData} Furniture | Homeline Furniture Uganda`
+          ? `Furniture | Homeline Furniture Uganda`
           : 'Shop | Homeline Furniture Uganda',
       },
       {
