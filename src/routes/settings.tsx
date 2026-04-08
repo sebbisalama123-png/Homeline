@@ -8,7 +8,7 @@ import type { Theme } from '../lib/useTheme'
 
 export const Route = createFileRoute('/settings')({
   head: () => ({
-    meta: [{ title: 'Settings — Hearth & Timber Uganda' }],
+    meta: [{ title: 'Settings — Homeline Furniture Uganda' }],
   }),
   component: SettingsPage,
 })

@@ -42,7 +42,7 @@ export const Route = createRootRoute({
       },
       {
         name: 'apple-mobile-web-app-title',
-        content: 'Hearth & Timber',
+        content: 'Homeline Furniture',
       },
     ],
     links: [

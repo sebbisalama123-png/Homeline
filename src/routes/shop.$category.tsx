@@ -15,14 +15,14 @@ export const Route = createFileRoute('/shop/$category')({
     meta: [
       {
         title: loaderData
-          ? `${loaderData} Furniture | Hearth & Timber Uganda`
-          : 'Shop | Hearth & Timber Uganda',
+          ? `${loaderData} Furniture | Homeline Furniture Uganda`
+          : 'Shop | Homeline Furniture Uganda',
       },
       {
         name: 'description',
         content: loaderData
           ? `Shop ${loaderData} furniture — handcrafted pieces for Ugandan homes. Browse and order with cash on delivery.`
-          : 'Browse furniture collections at Hearth & Timber Uganda.',
+          : 'Browse furniture collections at Homeline Furniture Uganda.',
       },
     ],
   }),

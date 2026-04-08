@@ -67,7 +67,7 @@ function buildEmailHtml(data: OrderEmailData): string {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Order Confirmed — Hearth & Timber</title>
+  <title>Order Confirmed — Homeline Furniture</title>
 </head>
 <body style="margin:0;padding:0;background:#f5f2ec;font-family:'Outfit',ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f2ec;padding:32px 16px;">
@@ -78,7 +78,7 @@ function buildEmailHtml(data: OrderEmailData): string {
           <!-- Header -->
           <tr>
             <td style="background:linear-gradient(135deg,#8e5f35,#b48357);border-radius:16px 16px 0 0;padding:28px 32px;text-align:center;">
-              <p style="margin:0;font-size:22px;font-weight:700;color:#fff;letter-spacing:0.02em;">Hearth & Timber Uganda</p>
+              <p style="margin:0;font-size:22px;font-weight:700;color:#fff;letter-spacing:0.02em;">Homeline Furniture Uganda</p>
               <p style="margin:6px 0 0;font-size:13px;color:rgba(255,255,255,0.82);">Your order is confirmed</p>
             </td>
           </tr>
@@ -137,7 +137,7 @@ function buildEmailHtml(data: OrderEmailData): string {
                 Questions? WhatsApp us at <a href="https://wa.me/256704579980" style="color:#8e5f35;text-decoration:none;">+256 704 579 980</a><br/>
                 or email <a href="mailto:studio@hearthandtimber.ug" style="color:#8e5f35;text-decoration:none;">studio@hearthandtimber.ug</a>
               </p>
-              <p style="margin:10px 0 0;font-size:11px;color:#b8ab9d;">© ${new Date().getFullYear()} Hearth & Timber Uganda · Plot 12, Kololo, Kampala</p>
+              <p style="margin:10px 0 0;font-size:11px;color:#b8ab9d;">© ${new Date().getFullYear()} Homeline Furniture Uganda · Plot 12, Kololo, Kampala</p>
             </td>
           </tr>
 
@@ -168,7 +168,7 @@ export async function sendOrderConfirmationEmail(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: 'Hearth & Timber Uganda <onboarding@resend.dev>',
+      from: 'Homeline Furniture Uganda <onboarding@resend.dev>',
       to: [data.to],
       subject: `Order confirmed — ${data.orderNumber}`,
       html: buildEmailHtml(data),

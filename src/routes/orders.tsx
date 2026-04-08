@@ -40,7 +40,7 @@ async function fetchOrder(orderNumber: string) {
 export const Route = createFileRoute('/orders')({
   head: () => ({
     meta: [
-      { title: 'Track Your Order | Hearth & Timber Uganda' },
+      { title: 'Track Your Order | Homeline Furniture Uganda' },
       {
         name: 'description',
         content: 'Enter your order number to check your delivery status.',

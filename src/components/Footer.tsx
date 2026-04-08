@@ -10,7 +10,7 @@ export default function Footer() {
         <div>
           <p className="brand-mark m-0 text-(--ink)">
             <span className="brand-mark__dot" />
-            Hearth & Timber
+            Homeline Furniture
           </p>
           <p className="mt-3 max-w-xs text-sm leading-6">
             Crafted furniture for warm, modern Ugandan interiors. Every piece
@@ -80,7 +80,7 @@ export default function Footer() {
             <li>
               <span className="footer-contact-item">
                 <Mail size={14} />
-                studio@hearthandtimber.ug
+                studio@homelinefurniture.ug
               </span>
             </li>
             <li>
@@ -95,7 +95,7 @@ export default function Footer() {
 
       <div className="page-wrap mt-10 flex flex-col gap-2 border-t border-(--line) pt-6 text-xs font-medium tracking-[0.06em] sm:flex-row sm:items-center sm:justify-between">
         <p className="m-0">
-          &copy; {year} Hearth & Timber Uganda. All rights reserved.
+          &copy; {year} Homeline Furniture Uganda. All rights reserved.
         </p>
         <p className="m-0 text-(--ink-soft)">Designed & built in Kampala</p>
       </div>

@@ -5,7 +5,7 @@ import { schemaTypes } from './schemaTypes'
 
 export default defineConfig({
   name: 'hearth-timber',
-  title: 'Hearth & Timber Uganda',
+  title: 'Homeline Furniture Uganda',
 
   // Replace with your actual Project ID from sanity.io/manage
   projectId: process.env.SANITY_STUDIO_PROJECT_ID ?? 'your-project-id',

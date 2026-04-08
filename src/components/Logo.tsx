@@ -5,7 +5,7 @@ interface LogoProps {
 }
 
 /**
- * Hearth & Timber mark — house silhouette with a flame.
+ * Homeline Furniture mark — house silhouette with a flame.
  * Renders as an inline SVG so it inherits theme transitions.
  */
 export default function Logo({ size = 32, className }: LogoProps) {

@@ -4,11 +4,11 @@ import { MapPin, MessageCircle, ShieldCheck, Truck } from 'lucide-react'
 export const Route = createFileRoute('/about')({
   head: () => ({
     meta: [
-      { title: 'Our Story | Hearth & Timber Uganda' },
+      { title: 'Our Story | Homeline Furniture Uganda' },
       {
         name: 'description',
         content:
-          'Hearth & Timber is a Uganda-based furniture studio crafting pieces built for real homes and real living.',
+          'Homeline Furniture is a Uganda-based furniture studio crafting pieces built for real homes and real living.',
       },
     ],
   }),
@@ -24,7 +24,7 @@ function About() {
           Built for Ugandan homes. Designed to last.
         </h1>
         <p className="m-0 max-w-3xl text-base leading-8 text-(--ink-soft)">
-          Hearth & Timber was born out of a simple frustration — quality
+          Homeline Furniture was born out of a simple frustration — quality
           furniture in Uganda was either imported and overpriced, or locally
           made with no eye for design. We set out to change that. Every piece in
           our collection is crafted with natural materials, honest construction,

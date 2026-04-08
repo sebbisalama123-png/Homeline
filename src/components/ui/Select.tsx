@@ -1,6 +1,6 @@
 /**
  * Custom Select built on Radix UI primitives, styled to match the
- * Hearth & Timber design language (earthy palette, pill/rounded forms).
+ * Homeline Furniture design language (earthy palette, pill/rounded forms).
  */
 import * as RadixSelect from '@radix-ui/react-select'
 import { Check, ChevronDown, ChevronUp } from 'lucide-react'

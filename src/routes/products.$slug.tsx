@@ -48,8 +48,8 @@ export const Route = createFileRoute('/products/$slug')({
       meta: [
         {
           title: data
-            ? `${data.product.name} | Hearth & Timber Uganda`
-            : 'Product | Hearth & Timber Uganda',
+            ? `${data.product.name} | Homeline Furniture Uganda`
+            : 'Product | Homeline Furniture Uganda',
         },
         {
           name: 'description',

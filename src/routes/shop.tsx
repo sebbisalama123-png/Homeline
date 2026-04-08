@@ -8,7 +8,7 @@ type ShopLoaderData = { products: SanityProduct[]; categories: string[] }
 export const Route = createFileRoute('/shop')({
   head: () => ({
     meta: [
-      { title: 'Shop All Furniture | Hearth & Timber Uganda' },
+      { title: 'Shop All Furniture | Homeline Furniture Uganda' },
       {
         name: 'description',
         content:

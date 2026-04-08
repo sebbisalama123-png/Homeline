@@ -27,10 +27,10 @@ type AccountOrder = {
 export const Route = createFileRoute('/account/orders')({
   head: () => ({
     meta: [
-      { title: 'My Orders | Hearth & Timber Uganda' },
+      { title: 'My Orders | Homeline Furniture Uganda' },
       {
         name: 'description',
-        content: 'View and track all your Hearth & Timber orders.',
+        content: 'View and track all your Homeline Furniture orders.',
       },
     ],
   }),
