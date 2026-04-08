@@ -1,10 +1,11 @@
+/// <reference types="node" />
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemaTypes'
 
 export default defineConfig({
-  name: 'hearth-timber',
+  name: 'homeline-furniture',
   title: 'Homeline Furniture Uganda',
 
   // Replace with your actual Project ID from sanity.io/manage
