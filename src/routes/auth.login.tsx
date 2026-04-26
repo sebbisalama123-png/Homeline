@@ -1,7 +1,7 @@
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Loader2 } from 'lucide-react'
-import { useAuth } from '../components/AuthProvider'
+import { useAuth, isAdminEmail } from '../components/AuthProvider'
 
 export const Route = createFileRoute('/auth/login')({
   validateSearch: (
@@ -61,8 +61,9 @@ function LoginPage() {
     setError('')
     setIsSubmitting(true)
     try {
-      await signInWithEmail(email.trim(), password)
-      void navigate({ to: redirectTo ?? '/admin/orders' })
+      const signedInEmail = await signInWithEmail(email.trim(), password)
+      const dest = redirectTo ?? (isAdminEmail(signedInEmail) ? '/admin/orders' : '/')
+      void navigate({ to: dest })
     } catch (cause) {
       setError(cause instanceof Error ? mapFirebaseError(cause.message) : 'Could not sign in.')
     } finally {
@@ -74,8 +75,9 @@ function LoginPage() {
     setError('')
     setIsGooglePending(true)
     try {
-      await signInWithGoogle()
-      void navigate({ to: redirectTo ?? '/admin/orders' })
+      const signedInEmail = await signInWithGoogle()
+      const dest = redirectTo ?? (isAdminEmail(signedInEmail) ? '/admin/orders' : '/')
+      void navigate({ to: dest })
     } catch (cause) {
       setError(cause instanceof Error ? mapFirebaseError(cause.message) : 'Could not sign in.')
     } finally {

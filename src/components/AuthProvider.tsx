@@ -26,9 +26,9 @@ type AuthContextValue = {
   loading: boolean
   isAdmin: boolean
   configError: string | null
-  signInWithGoogle: () => Promise<void>
-  signInWithEmail: (email: string, password: string) => Promise<void>
-  signUpWithEmail: (email: string, password: string) => Promise<void>
+  signInWithGoogle: () => Promise<string>
+  signInWithEmail: (email: string, password: string) => Promise<string>
+  signUpWithEmail: (email: string, password: string) => Promise<string>
   sendVerificationEmail: () => Promise<void>
   logOut: () => Promise<void>
   getIdToken: () => Promise<string | null>
@@ -49,6 +49,10 @@ function parseAdminEmails() {
 }
 
 const ADMIN_EMAILS = parseAdminEmails()
+
+export function isAdminEmail(email: string) {
+  return ADMIN_EMAILS.includes(email.toLowerCase())
+}
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<FirebaseUser | null>(null)
@@ -108,18 +112,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
         const result = await signInWithPopup(auth, googleProvider)
         await hydrateUserProfile(result.user)
+        return result.user.email ?? ''
       },
       signInWithEmail: async (email, password) => {
         if (!auth) {
           throw new Error(configError ?? 'Firebase auth is unavailable.')
         }
         await signInWithEmailAndPassword(auth, email, password)
+        return email
       },
       signUpWithEmail: async (email, password) => {
         if (!auth) {
           throw new Error(configError ?? 'Firebase auth is unavailable.')
         }
         await createUserWithEmailAndPassword(auth, email, password)
+        return email
       },
       sendVerificationEmail: async () => {
         if (!auth?.currentUser) {
