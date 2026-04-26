@@ -96,7 +96,7 @@ function About() {
             className="btn-muted mt-4 inline-flex items-center gap-2 no-underline"
           >
             <MessageCircle size={15} />
-            Chat on WhatsApp
+            Chat on WhatsApp.
           </a>
         </div>
       </section>
