@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { AuthProvider } from '../components/AuthProvider'
 import { CartProvider } from '../components/CartProvider'
 import { CurrencyProvider } from '../components/CurrencyProvider'
+import { ToastProvider } from '../components/ToastProvider'
 import ErrorPage from '../components/ErrorPage'
 import NotFound from '../components/NotFound'
 import Footer from '../components/Footer'
@@ -90,9 +91,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <AuthProvider>
             <CurrencyProvider>
               <CartProvider>
-                <Header />
-                {children}
-                <Footer />
+                <ToastProvider>
+                  <Header />
+                  {children}
+                  <Footer />
+                </ToastProvider>
               </CartProvider>
             </CurrencyProvider>
           </AuthProvider>

@@ -13,6 +13,7 @@ import {
 } from 'lucide-react'
 import { useCart } from '../components/CartProvider'
 import { useCurrency } from '../components/CurrencyProvider'
+import { useToast } from '../components/ToastProvider'
 import SmartImage from '../components/SmartImage'
 import type { SanityProduct } from '../lib/sanity/types'
 import { getAllProducts, getProductBySlug } from '../lib/sanity/queries'
@@ -76,6 +77,7 @@ export const Route = createFileRoute('/products/$slug')({
 function ProductDetailPage() {
   const { formatPrice } = useCurrency()
   const { addItem } = useCart()
+  const { toast } = useToast()
   const { product, allProducts } = Route.useLoaderData() as ProductLoaderData
   const displayPrice = product.salePrice ?? product.price
   const gallery: string[] =
@@ -209,7 +211,14 @@ function ProductDetailPage() {
               <button
                 type="button"
                 className="btn-primary w-full"
-                onClick={() => addItem(product)}
+                onClick={() => {
+                  addItem(product)
+                  toast({
+                    title: 'Added to cart',
+                    description: product.name,
+                    variant: 'success',
+                  })
+                }}
               >
                 Add to Cart
               </button>
@@ -291,7 +300,14 @@ function ProductDetailPage() {
         <button
           type="button"
           className="btn-primary"
-          onClick={() => addItem(product)}
+          onClick={() => {
+                  addItem(product)
+                  toast({
+                    title: 'Added to cart',
+                    description: product.name,
+                    variant: 'success',
+                  })
+                }}
         >
           Add to Cart
         </button>

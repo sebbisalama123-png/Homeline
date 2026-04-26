@@ -14,6 +14,13 @@ function App() {
   const { formatPrice } = useCurrency()
   const products =
     Route.useLoaderData() as import('../lib/sanity/types').SanityProduct[]
+  const featuredProduct =
+    products.find((product) => product.slug === 'marlow-cloud-sofa') ??
+    products[0]
+
+  const featuredPrice = featuredProduct
+    ? (featuredProduct.salePrice ?? featuredProduct.price)
+    : null
 
   return (
     <main className="pb-8">
@@ -56,22 +63,32 @@ function App() {
             <p className="eyebrow mb-1" style={{ color: '#a07850' }}>
               Featured
             </p>
-            <p className="m-0 text-xl font-semibold text-(--ink)">
-              The Camden Sofa
-            </p>
-            <p className="mt-1.5 text-sm text-(--ink-soft)">
-              Deep-seated comfort in textured bouclé. Available in 8 shades.
-            </p>
-            <p className="mt-3 text-sm font-semibold text-(--ink)">
-              From {formatPrice(4600000)}
-            </p>
-            <Link
-              to="/products/$slug"
-              params={{ slug: 'marlow-cloud-sofa' }}
-              className="hero-full__card-cta no-underline inline-flex items-center gap-1.5 mt-3"
-            >
-              View product <ArrowRight size={13} />
-            </Link>
+            {featuredProduct ? (
+              <>
+                <p className="m-0 text-xl font-semibold text-(--ink)">
+                  {featuredProduct.name}
+                </p>
+                <p className="mt-1.5 text-sm text-(--ink-soft)">
+                  {featuredProduct.shortDescription}
+                </p>
+                {featuredPrice !== null ? (
+                  <p className="mt-3 text-sm font-semibold text-(--ink)">
+                    From {formatPrice(featuredPrice)}
+                  </p>
+                ) : null}
+                <Link
+                  to="/products/$slug"
+                  params={{ slug: featuredProduct.slug }}
+                  className="hero-full__card-cta no-underline inline-flex items-center gap-1.5 mt-3"
+                >
+                  View product <ArrowRight size={13} />
+                </Link>
+              </>
+            ) : (
+              <p className="m-0 text-sm text-(--ink-soft)">
+                Products are being updated. Explore the full collection.
+              </p>
+            )}
           </div>
         </div>
 

@@ -2,6 +2,7 @@ import { Link, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect, useRef } from 'react'
 import type { KeyboardEvent as ReactKeyboardEvent } from 'react'
 import {
+  ChevronDown,
   LayoutDashboard,
   LogIn,
   LogOut,
@@ -11,6 +12,7 @@ import {
   Search,
   Settings,
   ShoppingCart,
+  UserPlus,
   X,
 } from 'lucide-react'
 import { ThemeSwitcher } from './ThemeSwitcher'
@@ -28,10 +30,13 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const menuButtonRef = useRef<HTMLButtonElement>(null)
   const searchButtonRef = useRef<HTMLButtonElement>(null)
   const cartButtonRef = useRef<HTMLButtonElement>(null)
+  const profileButtonRef = useRef<HTMLButtonElement>(null)
+  const profileMenuRef = useRef<HTMLDivElement>(null)
   const menuPanelRef = useRef<HTMLElement>(null)
   const searchPanelRef = useRef<HTMLElement>(null)
   const cartPanelRef = useRef<HTMLElement>(null)
@@ -60,13 +65,47 @@ export default function Header() {
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isProfileOpen) {
+        setIsProfileOpen(false)
+      }
+
       if (event.key === 'Escape' && isAnyOpen) {
         closeAll()
       }
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [isAnyOpen])
+  }, [isAnyOpen, isProfileOpen])
+
+  useEffect(() => {
+    if (!isProfileOpen) {
+      return
+    }
+
+    const onPointerDown = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node | null
+      if (!target) {
+        return
+      }
+
+      if (
+        profileButtonRef.current?.contains(target) ||
+        profileMenuRef.current?.contains(target)
+      ) {
+        return
+      }
+
+      setIsProfileOpen(false)
+    }
+
+    window.addEventListener('mousedown', onPointerDown)
+    window.addEventListener('touchstart', onPointerDown)
+
+    return () => {
+      window.removeEventListener('mousedown', onPointerDown)
+      window.removeEventListener('touchstart', onPointerDown)
+    }
+  }, [isProfileOpen])
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -114,6 +153,7 @@ export default function Header() {
     setIsMenuOpen(false)
     setIsSearchOpen(false)
     setIsCartOpen(false)
+    setIsProfileOpen(false)
   }
 
   const trapFocus = (
@@ -234,21 +274,127 @@ export default function Header() {
             {user && !isAdmin ? (
               <Link
                 to="/account/orders"
-                className="header-chip hidden no-underline md:inline-flex"
+                className="header-chip header-desktop-only no-underline"
               >
                 <Package size={14} />
                 My Orders
               </Link>
             ) : null}
             {!user ? (
-              <Link
-                to="/auth/login"
-                className="header-chip hidden no-underline md:inline-flex"
-              >
-                <LogIn size={14} />
-                Sign In
-              </Link>
-            ) : null}
+              <>
+                <Link
+                  to="/auth/login"
+                  className="header-chip header-desktop-only no-underline"
+                >
+                  <LogIn size={14} />
+                  Sign In
+                </Link>
+                <Link
+                  to="/auth/signup"
+                  className="header-chip header-desktop-only no-underline"
+                >
+                  <UserPlus size={14} />
+                  Sign Up
+                </Link>
+              </>
+            ) : (
+              <div className="header-profile header-desktop-flex">
+                <button
+                  type="button"
+                  ref={profileButtonRef}
+                  className="header-chip header-profile-btn"
+                  aria-haspopup="dialog"
+                  aria-expanded={isProfileOpen}
+                  onClick={() => setIsProfileOpen((open) => !open)}
+                >
+                  {user.photoURL ? (
+                    <img
+                      src={user.photoURL}
+                      alt={user.displayName ?? 'Profile'}
+                      className="header-profile-btn__avatar"
+                    />
+                  ) : (
+                    <span className="header-profile-btn__avatar header-profile-btn__avatar--fallback">
+                      {user.displayName
+                        ? user.displayName[0].toUpperCase()
+                        : user.email
+                          ? user.email[0].toUpperCase()
+                          : '?'}
+                    </span>
+                  )}
+                  <span className="header-profile-btn__name">
+                    {user.displayName ?? user.email?.split('@')[0] ?? 'Account'}
+                  </span>
+                  <ChevronDown size={14} />
+                </button>
+
+                {isProfileOpen ? (
+                  <div
+                    ref={profileMenuRef}
+                    role="dialog"
+                    aria-label="Account menu"
+                    className="header-profile-menu"
+                  >
+                    <div className="header-profile-menu__summary">
+                      <p className="header-profile-menu__name">
+                        {user.displayName ?? 'My Account'}
+                      </p>
+                      {user.email ? (
+                        <p className="header-profile-menu__email">
+                          {user.email}
+                        </p>
+                      ) : null}
+                    </div>
+
+                    <div className="header-profile-menu__actions">
+                      <Link
+                        to="/settings"
+                        className="header-profile-menu__link no-underline"
+                        onClick={() => setIsProfileOpen(false)}
+                      >
+                        <Settings size={14} />
+                        Settings
+                      </Link>
+
+                      {user && !isAdmin ? (
+                        <Link
+                          to="/account/orders"
+                          className="header-profile-menu__link no-underline"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <Package size={14} />
+                          My Orders
+                        </Link>
+                      ) : null}
+
+                      {isAdmin ? (
+                        <Link
+                          to="/admin/orders"
+                          className="header-profile-menu__link no-underline"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <LayoutDashboard size={14} />
+                          Admin Dashboard
+                        </Link>
+                      ) : null}
+
+                      <button
+                        type="button"
+                        className="header-profile-menu__logout"
+                        onClick={() => {
+                          void logOut()
+                          setIsProfileOpen(false)
+                        }}
+                      >
+                        <LogOut size={14} />
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            )}
+
             <button
               type="button"
               className="header-chip relative"
