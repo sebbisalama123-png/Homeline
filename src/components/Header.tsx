@@ -160,8 +160,8 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-(--line) bg-(--header-bg) backdrop-blur-xl">
-        <div className="border-b border-(--line) bg-(--ink) px-4 py-2 text-center text-xs font-semibold tracking-[0.08em] text-white sm:text-sm">
+      <header className="site-header sticky top-0 z-50 border-b border-(--line) bg-(--header-bg) backdrop-blur-xl">
+        <div className="announcement-bar px-4 py-2 text-center text-xs font-semibold tracking-[0.08em] sm:text-sm">
           FREE DELIVERY IN KAMPALA ON ORDERS OVER UGX 1,500,000
         </div>
 
@@ -174,7 +174,7 @@ export default function Header() {
 
             <button
               type="button"
-              className="icon-btn ml-auto md:hidden"
+              className="icon-btn header-menu-btn ml-auto md:hidden"
               ref={menuButtonRef}
               onClick={() => {
                 setIsMenuOpen(true)

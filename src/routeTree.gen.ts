@@ -16,6 +16,7 @@ import { Route as OrderSuccessRouteImport } from './routes/order-success'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ShopIndexRouteImport } from './routes/shop.index'
 import { Route as ShopCategoryRouteImport } from './routes/shop.$category'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as AuthSignupRouteImport } from './routes/auth.signup'
@@ -62,6 +63,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ShopIndexRoute = ShopIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ShopRoute,
 } as any)
 const ShopCategoryRoute = ShopCategoryRouteImport.update({
   id: '/$category',
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/auth/signup': typeof AuthSignupRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/shop/$category': typeof ShopCategoryRoute
+  '/shop/': typeof ShopIndexRoute
   '/api/account/orders': typeof ApiAccountOrdersRoute
   '/api/admin/orders': typeof ApiAdminOrdersRouteWithChildren
   '/api/auth/sync': typeof ApiAuthSyncRoute
@@ -146,7 +153,6 @@ export interface FileRoutesByTo {
   '/order-success': typeof OrderSuccessRoute
   '/orders': typeof OrdersRoute
   '/settings': typeof SettingsRoute
-  '/shop': typeof ShopRouteWithChildren
   '/account/orders': typeof AccountOrdersRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/api/orders': typeof ApiOrdersRoute
@@ -154,6 +160,7 @@ export interface FileRoutesByTo {
   '/auth/signup': typeof AuthSignupRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/shop/$category': typeof ShopCategoryRoute
+  '/shop': typeof ShopIndexRoute
   '/api/account/orders': typeof ApiAccountOrdersRoute
   '/api/admin/orders': typeof ApiAdminOrdersRouteWithChildren
   '/api/auth/sync': typeof ApiAuthSyncRoute
@@ -175,6 +182,7 @@ export interface FileRoutesById {
   '/auth/signup': typeof AuthSignupRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/shop/$category': typeof ShopCategoryRoute
+  '/shop/': typeof ShopIndexRoute
   '/api/account/orders': typeof ApiAccountOrdersRoute
   '/api/admin/orders': typeof ApiAdminOrdersRouteWithChildren
   '/api/auth/sync': typeof ApiAuthSyncRoute
@@ -197,6 +205,7 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/products/$slug'
     | '/shop/$category'
+    | '/shop/'
     | '/api/account/orders'
     | '/api/admin/orders'
     | '/api/auth/sync'
@@ -209,7 +218,6 @@ export interface FileRouteTypes {
     | '/order-success'
     | '/orders'
     | '/settings'
-    | '/shop'
     | '/account/orders'
     | '/admin/orders'
     | '/api/orders'
@@ -217,6 +225,7 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/products/$slug'
     | '/shop/$category'
+    | '/shop'
     | '/api/account/orders'
     | '/api/admin/orders'
     | '/api/auth/sync'
@@ -237,6 +246,7 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/products/$slug'
     | '/shop/$category'
+    | '/shop/'
     | '/api/account/orders'
     | '/api/admin/orders'
     | '/api/auth/sync'
@@ -312,6 +322,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/shop/': {
+      id: '/shop/'
+      path: '/'
+      fullPath: '/shop/'
+      preLoaderRoute: typeof ShopIndexRouteImport
+      parentRoute: typeof ShopRoute
     }
     '/shop/$category': {
       id: '/shop/$category'
@@ -395,10 +412,12 @@ declare module '@tanstack/react-router' {
 
 interface ShopRouteChildren {
   ShopCategoryRoute: typeof ShopCategoryRoute
+  ShopIndexRoute: typeof ShopIndexRoute
 }
 
 const ShopRouteChildren: ShopRouteChildren = {
   ShopCategoryRoute: ShopCategoryRoute,
+  ShopIndexRoute: ShopIndexRoute,
 }
 
 const ShopRouteWithChildren = ShopRoute._addFileChildren(ShopRouteChildren)

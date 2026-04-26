@@ -1,11 +1,11 @@
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { useMemo, useState } from 'react'
 import { SlidersHorizontal, Star, X } from 'lucide-react'
 import { useCurrency } from './CurrencyProvider'
 import SmartImage from './SmartImage'
 import { Select } from './ui/Select'
 import type { SanityProduct } from '../lib/sanity/types'
-import { catalogCategories } from '../data/catalog'
+import { catalogCategories, categoryToSlug } from '../data/catalog'
 
 const SORT_OPTIONS = [
   { value: 'featured', label: 'Featured' },
@@ -92,9 +92,15 @@ export default function ShopCatalog({
   initialQuery = '',
 }: ShopCatalogProps) {
   const { formatPrice } = useCurrency()
+  const navigate = useNavigate()
   const normalizedQuery = initialQuery.trim().toLowerCase()
 
   const CATEGORIES = [ALL_LABEL, ...(allCategories ?? catalogCategories)]
+
+  // URL is the source of truth for the active category.
+  // The route loader pre-filters `products` to the active category,
+  // so no client-side re-filtering is needed here.
+  const activeCategory = presetCategory ?? ALL_LABEL
 
   const PRICE_MIN = useMemo(
     () =>
@@ -112,11 +118,6 @@ export default function ShopCatalog({
   )
 
   const [sortBy, setSortBy] = useState<SortOption>('featured')
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    presetCategory && CATEGORIES.includes(presetCategory)
-      ? presetCategory
-      : ALL_LABEL,
-  )
   const [priceRange, setPriceRange] = useState<[number, number]>([
     PRICE_MIN,
     PRICE_MAX,
@@ -128,13 +129,8 @@ export default function ShopCatalog({
     useState<AvailabilityBand>('all')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
 
-  const categoryScopedProducts = useMemo(
-    () =>
-      selectedCategory === ALL_LABEL
-        ? [...products]
-        : products.filter((product) => product.category === selectedCategory),
-    [products, selectedCategory],
-  )
+  // Products are already scoped to the active category by the route loader.
+  const categoryScopedProducts = useMemo(() => [...products], [products])
 
   const visibleProducts = useMemo(() => {
     const filtered = categoryScopedProducts.filter((product) => {
@@ -193,10 +189,10 @@ export default function ShopCatalog({
     priceRange[1] !== PRICE_MAX ||
     selectedMaterialBands.length > 0 ||
     selectedAvailabilityBand !== 'all' ||
-    selectedCategory !== ALL_LABEL
+    activeCategory !== ALL_LABEL
 
   const activeFilterCount =
-    (selectedCategory !== ALL_LABEL ? 1 : 0) +
+    (activeCategory !== ALL_LABEL ? 1 : 0) +
     (priceRange[0] !== PRICE_MIN || priceRange[1] !== PRICE_MAX ? 1 : 0) +
     (selectedMaterialBands.length > 0 ? 1 : 0) +
     (selectedAvailabilityBand !== 'all' ? 1 : 0)
@@ -217,11 +213,29 @@ export default function ShopCatalog({
     )
   }
 
+  // Navigates to the appropriate route, preserving any active search query.
+  const navigateToCategory = (category: string) => {
+    if (category === ALL_LABEL) {
+      void navigate({
+        to: '/shop',
+        search: () => (initialQuery ? { q: initialQuery } : {}),
+      })
+    } else {
+      void navigate({
+        to: '/shop/$category',
+        params: { category: categoryToSlug(category) },
+        search: () => (initialQuery ? { q: initialQuery } : {}),
+      })
+    }
+  }
+
   const resetFilters = () => {
-    setSelectedCategory(ALL_LABEL)
     setPriceRange([PRICE_MIN, PRICE_MAX])
     setSelectedMaterialBands([])
     setSelectedAvailabilityBand('all')
+    if (activeCategory !== ALL_LABEL) {
+      void navigate({ to: '/shop', search: () => ({}) })
+    }
   }
 
   const hasPriceFilter = useMemo(
@@ -250,10 +264,9 @@ export default function ShopCatalog({
               <button
                 key={item}
                 type="button"
-                onClick={() => setSelectedCategory(item)}
-                className={
-                  item === selectedCategory ? 'chip is-active' : 'chip'
-                }
+                onClick={() => navigateToCategory(item)}
+                aria-pressed={item === activeCategory}
+                className={item === activeCategory ? 'chip is-active' : 'chip'}
               >
                 {item}
               </button>
@@ -327,6 +340,7 @@ export default function ShopCatalog({
                   key={band.value}
                   type="button"
                   onClick={() => setSelectedAvailabilityBand(band.value)}
+                  aria-pressed={band.value === selectedAvailabilityBand}
                   className={
                     band.value === selectedAvailabilityBand
                       ? 'chip is-active'
@@ -366,11 +380,16 @@ export default function ShopCatalog({
               </button>
 
               <div className="flex items-center gap-2">
-                <span className="hidden text-sm font-semibold text-(--ink-soft) sm:inline">Sort by</span>
+                <span className="hidden text-sm font-semibold text-(--ink-soft) sm:inline">
+                  Sort by
+                </span>
                 <Select
                   value={sortBy}
                   onValueChange={(v) => setSortBy(v as SortOption)}
-                  options={SORT_OPTIONS.map((o) => ({ value: o.value, label: o.label }))}
+                  options={SORT_OPTIONS.map((o) => ({
+                    value: o.value,
+                    label: o.label,
+                  }))}
                   aria-label="Sort products"
                 />
               </div>
@@ -389,13 +408,13 @@ export default function ShopCatalog({
 
           {hasActiveFilter ? (
             <div className="active-filters reveal-in">
-              {selectedCategory !== ALL_LABEL ? (
+              {activeCategory !== ALL_LABEL ? (
                 <button
                   type="button"
                   className="active-filter"
-                  onClick={() => setSelectedCategory(ALL_LABEL)}
+                  onClick={() => navigateToCategory(ALL_LABEL)}
                 >
-                  Category: {selectedCategory}
+                  Category: {activeCategory}
                   <X size={10} aria-hidden="true" />
                 </button>
               ) : null}
@@ -488,7 +507,11 @@ export default function ShopCatalog({
                         <Star
                           key={n}
                           size={11}
-                          className={n <= Math.round(product.rating) ? 'star-filled' : 'star-empty'}
+                          className={
+                            n <= Math.round(product.rating)
+                              ? 'star-filled'
+                              : 'star-empty'
+                          }
                         />
                       ))}
                       <span className="star-count">({product.reviews})</span>
@@ -543,9 +566,13 @@ export default function ShopCatalog({
                 <button
                   key={item}
                   type="button"
-                  onClick={() => setSelectedCategory(item)}
+                  onClick={() => {
+                    navigateToCategory(item)
+                    setIsFilterOpen(false)
+                  }}
+                  aria-pressed={item === activeCategory}
                   className={
-                    item === selectedCategory ? 'chip is-active' : 'chip'
+                    item === activeCategory ? 'chip is-active' : 'chip'
                   }
                 >
                   {item}
@@ -620,6 +647,7 @@ export default function ShopCatalog({
                     key={band.value}
                     type="button"
                     onClick={() => setSelectedAvailabilityBand(band.value)}
+                    aria-pressed={band.value === selectedAvailabilityBand}
                     className={
                       band.value === selectedAvailabilityBand
                         ? 'chip is-active'
@@ -659,7 +687,10 @@ export default function ShopCatalog({
         <Select
           value={sortBy}
           onValueChange={(v) => setSortBy(v as SortOption)}
-          options={SORT_OPTIONS.map((o) => ({ value: o.value, label: o.label }))}
+          options={SORT_OPTIONS.map((o) => ({
+            value: o.value,
+            label: o.label,
+          }))}
           aria-label="Sort products"
         />
       </div>

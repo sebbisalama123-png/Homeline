@@ -18,6 +18,15 @@
   --header-bg: rgba(255, 253, 249, 0.92);
   --hero-a: rgba(214, 179, 145, 0.28);
   --hero-b: rgba(142, 160, 131, 0.22);
+  --ui-surface: rgba(255, 255, 255, 0.74);
+  --ui-surface-hover: #f5ecdf;
+  --ui-active-bg: #f3e2cf;
+  --ui-active-border: rgba(141, 99, 58, 0.45);
+  --ui-chip-count-bg: rgba(255, 255, 255, 0.9);
+  --announcement-bg: #2a2018;
+  --announcement-text: #f6efe6;
+  --theme-active-bg: #8d4f22;
+  --theme-active-text: #fff;
 }
 
 /* ── Dark mode palette ── */
@@ -33,6 +42,15 @@
   --header-bg: rgba(22, 19, 15, 0.94);
   --hero-a: rgba(100, 60, 20, 0.2);
   --hero-b: rgba(40, 65, 35, 0.18);
+  --ui-surface: rgba(46, 39, 32, 0.78);
+  --ui-surface-hover: rgba(62, 51, 41, 0.9);
+  --ui-active-bg: rgba(141, 99, 58, 0.24);
+  --ui-active-border: rgba(212, 160, 106, 0.5);
+  --ui-chip-count-bg: rgba(35, 30, 25, 0.9);
+  --announcement-bg: #0f0c09;
+  --announcement-text: #efe1cf;
+  --theme-active-bg: #c78b57;
+  --theme-active-text: #20160f;
 }
 
 .dark .drawer-link:hover {
@@ -174,6 +192,20 @@ pre code {
   box-shadow: 0 0 0 4px rgba(173, 125, 80, 0.18);
 }
 
+.announcement-bar {
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--announcement-bg) 94%, var(--clay) 6%),
+    var(--announcement-bg)
+  );
+  color: var(--announcement-text);
+}
+
+.site-header {
+  box-shadow: 0 8px 24px color-mix(in oklab, var(--mist) 22%, transparent);
+}
+
 .search-shell {
   display: flex;
   align-items: center;
@@ -181,13 +213,13 @@ pre code {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0.6rem 0.9rem;
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--ui-surface);
   color: var(--ink-soft);
 }
 
 .header-chip {
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.74);
+  background: var(--ui-surface);
   color: var(--ink);
   border-radius: 999px;
   padding: 0.56rem 0.95rem;
@@ -197,12 +229,12 @@ pre code {
 
 .header-chip:hover {
   border-color: #9d7650;
-  background: #f5ecdf;
+  background: var(--ui-surface-hover);
 }
 
 .icon-btn {
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.74);
+  background: var(--ui-surface);
   color: var(--ink);
   border-radius: 999px;
   padding: 0.52rem 0.85rem;
@@ -212,7 +244,7 @@ pre code {
 
 .icon-btn:hover {
   border-color: #9d7650;
-  background: #f5ecdf;
+  background: var(--ui-surface-hover);
 }
 
 .currency-pill {
@@ -221,7 +253,7 @@ pre code {
   gap: 0.45rem;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.74);
+  background: var(--ui-surface);
   color: var(--ink-soft);
   font-size: 0.75rem;
   font-weight: 700;
@@ -649,7 +681,7 @@ pre code {
   border: 1px solid var(--line);
   border-radius: 0.85rem;
   padding: 0.7rem 0.75rem;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--ui-surface);
   display: grid;
   gap: 0.55rem;
 }
@@ -676,7 +708,7 @@ pre code {
 .check-row {
   border: 1px solid var(--line);
   border-radius: 0.7rem;
-  background: rgba(255, 255, 255, 0.66);
+  background: var(--ui-surface);
   color: var(--ink);
   padding: 0.45rem 0.62rem;
   font-size: 0.84rem;
@@ -691,31 +723,49 @@ pre code {
 }
 
 .check-row.is-active {
-  border-color: #8d633a;
-  background: #f3e2cf;
+  border-color: var(--ui-active-border);
+  background: var(--ui-active-bg);
 }
 
 .chip {
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.66);
+  background: var(--ui-surface);
   color: var(--ink);
   padding: 0.42rem 0.75rem;
   font-size: 0.85rem;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
 }
 
+.chip:hover,
+.chip:focus-visible {
+  border-color: var(--ui-active-border);
+  background: var(--ui-surface-hover);
+}
+
 .chip.is-active {
-  border-color: #8d633a;
-  background: #f3e2cf;
+  border-color: var(--ui-active-border);
+  background: var(--ui-active-bg);
+  color: var(--ink);
+  font-weight: 700;
+  box-shadow: 0 0 0 2px
+    color-mix(in oklab, var(--ui-active-border) 35%, transparent);
+}
+
+.shop-chips .chip[aria-pressed='true'] {
+  border-color: var(--ui-active-border);
+  background: var(--ui-active-bg);
+  color: var(--ink);
+  font-weight: 700;
 }
 
 .chip-count {
   border-radius: 999px;
-  border: 1px solid rgba(34, 28, 22, 0.2);
-  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--ui-active-border);
+  background: var(--ui-chip-count-bg);
   padding: 0.07rem 0.4rem;
   font-size: 0.72rem;
   font-weight: 700;
@@ -748,7 +798,7 @@ pre code {
 .shop-sort select {
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--ui-surface);
   padding: 0.42rem 0.7rem;
   color: var(--ink);
 }
@@ -767,9 +817,9 @@ pre code {
 }
 
 .active-filter {
-  border: 1px solid rgba(141, 99, 58, 0.35);
+  border: 1px solid var(--ui-active-border);
   border-radius: 999px;
-  background: #f3e2cf;
+  background: var(--ui-active-bg);
   color: var(--ink);
   padding: 0.36rem 0.62rem;
   font-size: 0.78rem;
@@ -785,13 +835,13 @@ pre code {
   width: 1.05rem;
   height: 1.05rem;
   border-radius: 999px;
-  background: rgba(31, 29, 25, 0.1);
+  background: color-mix(in oklab, var(--ink) 14%, transparent);
   font-size: 0.72rem;
 }
 
 .active-filter--clear {
   border-color: var(--line);
-  background: rgba(255, 255, 255, 0.74);
+  background: var(--ui-surface);
 }
 
 .empty-state {
@@ -1217,7 +1267,7 @@ pre code {
   border: 1px solid var(--line);
   border-radius: 0.9rem;
   padding: 0.55rem;
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--ui-surface);
 }
 
 .cart-item img {
@@ -1238,7 +1288,7 @@ pre code {
   border-radius: 0.45rem;
   min-width: 1.8rem;
   height: 1.8rem;
-  background: white;
+  background: color-mix(in oklab, var(--paper) 88%, var(--mist) 12%);
   color: var(--ink);
   font-weight: 700;
 }
@@ -1356,7 +1406,7 @@ pre code {
   border: 1px solid var(--line);
   border-radius: 1rem;
   padding: 0.95rem;
-  background: rgba(255, 255, 255, 0.76);
+  background: var(--ui-surface);
 }
 
 .pdp-tax-note {
@@ -1374,7 +1424,7 @@ pre code {
   border: 1px solid var(--line);
   border-radius: 0.85rem;
   padding: 0.75rem 0.8rem;
-  background: rgba(255, 255, 255, 0.66);
+  background: var(--ui-surface);
 }
 
 .pdp-policy-grid p {
@@ -1424,7 +1474,7 @@ pre code {
   border: 1px solid var(--line);
   border-radius: 0.85rem;
   padding: 0.8rem;
-  background: rgba(255, 255, 255, 0.74);
+  background: var(--ui-surface);
 }
 
 .spec-grid h2 {
@@ -2255,6 +2305,12 @@ input[type='radio'],
   gap: 0.38rem;
 }
 
+@media (min-width: 768px) {
+  .header-menu-btn {
+    display: none !important;
+  }
+}
+
 /* ─── FOOTER CONTACT ITEMS ────────────────────────────────────── */
 .footer-contact-item {
   display: flex;
@@ -2326,7 +2382,7 @@ input[type='radio'],
   gap: 0.5rem;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--ui-surface);
   color: var(--ink);
   padding: 0.46rem 0.72rem 0.46rem 0.82rem;
   font-size: 0.84rem;
@@ -2343,7 +2399,7 @@ input[type='radio'],
 
 .ht-select-trigger:hover {
   border-color: #9d7650;
-  background: #f5ecdf;
+  background: var(--ui-surface-hover);
 }
 
 .ht-select-trigger:focus-visible {
@@ -2415,12 +2471,12 @@ input[type='radio'],
 }
 
 .ht-select-item[data-highlighted] {
-  background: #f3e2cf;
+  background: var(--ui-active-bg);
   color: var(--ink);
 }
 
 .ht-select-item[data-state='checked'] {
-  background: #f3e2cf;
+  background: var(--ui-active-bg);
   font-weight: 600;
 }
 
@@ -2827,7 +2883,7 @@ input[type='radio'],
 
 /* ─── PRICE NEW UPGRADE ──────────────────────────────────────── */
 .price-new {
-  color: #1f1d19;
+  color: var(--ink);
   font-weight: 700;
   font-size: 1rem;
 }
@@ -2852,7 +2908,7 @@ main {
 .theme-pill {
   display: inline-flex;
   align-items: center;
-  background: var(--paper);
+  background: var(--ui-surface);
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0.18rem;
@@ -2878,13 +2934,14 @@ main {
 
 .theme-pill__btn:hover {
   color: var(--ink);
-  background: var(--mist);
+  background: var(--ui-surface-hover);
 }
 
 .theme-pill__btn.is-active {
-  background: #8d4f22;
-  color: #fff;
-  box-shadow: 0 1px 4px rgba(141, 79, 34, 0.35);
+  background: var(--theme-active-bg);
+  color: var(--theme-active-text);
+  box-shadow: 0 1px 4px
+    color-mix(in oklab, var(--theme-active-bg) 48%, transparent);
 }
 
 /* ─── THEME SWITCHER — CARDS (settings page) ─────────────────── */

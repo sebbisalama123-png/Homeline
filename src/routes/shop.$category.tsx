@@ -51,6 +51,7 @@ function CategoryShopPage() {
 
   return (
     <ShopCatalog
+      key={category}
       title={category}
       description="Explore curated pieces in this collection. All prices default to Uganda Shillings."
       products={products}

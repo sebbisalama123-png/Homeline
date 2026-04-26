@@ -27,8 +27,12 @@ export function ThemeSwitcher({ variant = 'pill' }: ThemeSwitcherProps) {
             className={`theme-card ${theme === value ? 'is-active' : ''}`}
             aria-pressed={theme === value}
           >
-            <div className="theme-card__preview theme-card__preview--{value}">
-              <div className={`theme-card__swatch theme-card__swatch--${value}`} />
+            <div
+              className={`theme-card__preview theme-card__preview--${value}`}
+            >
+              <div
+                className={`theme-card__swatch theme-card__swatch--${value}`}
+              />
             </div>
             <div className="theme-card__icon">
               <Icon size={16} />
