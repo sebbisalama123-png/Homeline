@@ -31,6 +31,9 @@ if (isFirebaseConfigured()) {
 
 export const auth = authInstance
 export const googleProvider = new GoogleAuthProvider()
+googleProvider.addScope('profile')
+googleProvider.addScope('email')
+googleProvider.setCustomParameters({ prompt: 'select_account' })
 export type FirebaseUser = User
 
 export function getFirebaseConfigError() {

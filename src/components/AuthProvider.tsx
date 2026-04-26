@@ -55,6 +55,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
   const configError = getFirebaseConfigError()
 
+  async function hydrateUserProfile(nextUser: FirebaseUser | null) {
+    if (!nextUser) {
+      setUser(null)
+      return
+    }
+
+    try {
+      // Firebase sometimes lags photo/profile fields until a refresh.
+      await nextUser.reload()
+      setUser(auth?.currentUser ?? nextUser)
+    } catch {
+      setUser(nextUser)
+    }
+  }
+
   useEffect(() => {
     if (!auth) {
       setLoading(false)
@@ -62,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     const unsubscribe = onAuthStateChanged(auth, (nextUser) => {
-      setUser(nextUser)
+      void hydrateUserProfile(nextUser)
       setLoading(false)
 
       // Sync verified users to the database so we can look up orders by account
@@ -91,7 +106,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (!auth) {
           throw new Error(configError ?? 'Firebase auth is unavailable.')
         }
-        await signInWithPopup(auth, googleProvider)
+        const result = await signInWithPopup(auth, googleProvider)
+        await hydrateUserProfile(result.user)
       },
       signInWithEmail: async (email, password) => {
         if (!auth) {

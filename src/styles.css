@@ -1149,6 +1149,11 @@ pre code {
   justify-content: center;
 }
 
+.sidebar-user__avatar--image {
+  object-fit: cover;
+  display: block;
+}
+
 .sidebar-user__info {
   min-width: 0;
 }

@@ -12,7 +12,6 @@ import {
   Search,
   Settings,
   ShoppingCart,
-  UserPlus,
   X,
 } from 'lucide-react'
 import { ThemeSwitcher } from './ThemeSwitcher'
@@ -26,6 +25,11 @@ export default function Header() {
   const { formatPrice } = useCurrency()
   const { user, isAdmin, logOut } = useAuth()
   const { items, cartCount, subtotal, increment, decrement, remove } = useCart()
+  const userPhotoUrl =
+    user?.photoURL ??
+    user?.providerData.find((profile) => Boolean(profile?.photoURL))
+      ?.photoURL ??
+    null
   const navigate = useNavigate()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -281,22 +285,13 @@ export default function Header() {
               </Link>
             ) : null}
             {!user ? (
-              <>
-                <Link
-                  to="/auth/login"
-                  className="header-chip header-desktop-only no-underline"
-                >
-                  <LogIn size={14} />
-                  Sign In
-                </Link>
-                <Link
-                  to="/auth/signup"
-                  className="header-chip header-desktop-only no-underline"
-                >
-                  <UserPlus size={14} />
-                  Sign Up
-                </Link>
-              </>
+              <Link
+                to="/auth/login"
+                className="header-chip header-desktop-only no-underline"
+              >
+                <LogIn size={14} />
+                Sign In
+              </Link>
             ) : (
               <div className="header-profile header-desktop-flex">
                 <button
@@ -307,9 +302,9 @@ export default function Header() {
                   aria-expanded={isProfileOpen}
                   onClick={() => setIsProfileOpen((open) => !open)}
                 >
-                  {user.photoURL ? (
+                  {userPhotoUrl ? (
                     <img
-                      src={user.photoURL}
+                      src={userPhotoUrl}
                       alt={user.displayName ?? 'Profile'}
                       className="header-profile-btn__avatar"
                     />
@@ -505,13 +500,21 @@ export default function Header() {
         {/* ── User card ── */}
         {user ? (
           <div className="sidebar-user">
-            <div className="sidebar-user__avatar">
-              {user.displayName
-                ? user.displayName[0].toUpperCase()
-                : user.email
-                  ? user.email[0].toUpperCase()
-                  : '?'}
-            </div>
+            {userPhotoUrl ? (
+              <img
+                src={userPhotoUrl}
+                alt={user.displayName ?? 'Profile'}
+                className="sidebar-user__avatar sidebar-user__avatar--image"
+              />
+            ) : (
+              <div className="sidebar-user__avatar">
+                {user.displayName
+                  ? user.displayName[0].toUpperCase()
+                  : user.email
+                    ? user.email[0].toUpperCase()
+                    : '?'}
+              </div>
+            )}
             <div className="sidebar-user__info">
               <p className="sidebar-user__name">
                 {user.displayName ?? 'My Account'}
